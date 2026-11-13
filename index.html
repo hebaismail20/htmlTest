@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Great Coffee Panic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Lexend:wght@400;500;700&family=Noto+Sans+Arabic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Shipping-box world: kraft cardboard, black stencil ink, red "rush order" stamp, yellow packing tape, teal for calm shared information */
+  --kraft:#e8d4ae;
+  --paper:#f8efdc;
+  --ink:#2b1f17;
+  --stamp:#d23a22;
+  --tape:#f2c12e;
+  --calm:#167566;
+  --muted:#6b5643;
+  --line:rgba(43,31,23,.2);
+  --display:"Bungee", "Arial Black", Impact, sans-serif;
+  --body:"Lexend", "Segoe UI", system-ui, sans-serif;
+  --arabic:"Noto Sans Arabic", "Geeza Pro", "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--kraft);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(120,80,30,.045) 0 2px, transparent 2px 7px),
+    repeating-linear-gradient(0deg, rgba(120,80,30,.03) 0 1px, transparent 1px 11px);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:18px;
+  line-height:1.55;
+}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px 64px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.1;text-wrap:balance;margin:0}
+p{margin:0}
+.ar{font-family:var(--arabic);direction:rtl;unicode-bidi:isolate}
+
+/* ---------- chain bar ---------- */
+.chain{
+  position:sticky;top:0;z-index:5;
+  background:var(--ink);color:var(--paper);
+  border-bottom:4px solid var(--tape);
+}
+.chain ol{
+  list-style:none;margin:0 auto;padding:10px 12px;max-width:820px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:4px;align-items:start;
+}
+.chain li{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;position:relative;opacity:.45;transition:opacity .3s}
+.chain li.on{opacity:1}
+.chain li.now .dot{background:var(--tape);color:var(--ink);transform:scale(1.12)}
+.chain li:not(:last-child)::after{
+  content:"";position:absolute;top:17px;left:calc(50% + 22px);right:calc(-50% + 22px);
+  border-top:3px dashed rgba(248,239,220,.5);
+}
+.dot{width:36px;height:36px;border-radius:50%;background:var(--paper);color:var(--ink);display:grid;place-items:center;transition:transform .3s,background .3s}
+.dot svg{width:24px;height:24px}
+.chain .nm{font-size:12px;font-weight:700;line-height:1.15}
+.chain .qty{font-family:var(--display);font-size:13px;color:var(--tape);min-height:1.2em;font-variant-numeric:tabular-nums}
+
+/* ---------- hero ---------- */
+.hero{padding:34px 0 8px;display:grid;gap:14px}
+.eyebrow{font-family:var(--display);font-size:14px;letter-spacing:.06em;color:var(--stamp)}
+.hero h1{font-size:clamp(40px,8vw,74px);letter-spacing:.01em}
+.hero h1 span{display:inline-block;background:var(--tape);padding:0 .12em;transform:rotate(-1.5deg)}
+.lede{max-width:60ch;font-size:19px}
+
+/* ---------- scenes ---------- */
+.story{display:grid;gap:26px;margin-top:22px}
+.scene{
+  background:var(--paper);border:3px solid var(--ink);border-radius:6px;
+  box-shadow:7px 7px 0 var(--ink);
+  padding:22px;display:grid;gap:16px;position:relative;
+  animation:drop .45s cubic-bezier(.2,.9,.3,1.2) both;
+}
+.scene::before{ /* packing tape */
+  content:"";position:absolute;top:-12px;left:50%;width:110px;height:22px;margin-left:-55px;
+  background:rgba(242,193,46,.85);transform:rotate(-2deg);
+}
+@keyframes drop{from{transform:translateY(-14px) rotate(-.6deg);opacity:0}to{transform:none;opacity:1}}
+.tag{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
+  font-family:var(--display);font-size:15px;
+}
+.tag .step{background:var(--ink);color:var(--paper);padding:2px 8px;border-radius:3px}
+.tag .ar{font-size:15px;color:var(--muted)}
+.scene-body{display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:center}
+.art svg{width:150px;height:150px;display:block}
+.bubble{
+  position:relative;background:#fff;border:3px solid var(--ink);border-radius:22px;
+  padding:16px 18px;font-size:20px;font-weight:500;
+}
+.bubble::before{
+  content:"";position:absolute;left:-16px;top:40px;width:22px;height:22px;background:#fff;
+  border-left:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:rotate(45deg) skew(10deg,10deg);
+}
+.bubble.think{border-style:dashed}
+.bubble.think::before{display:none}
+.bubble.think::after{
+  content:"";position:absolute;left:-26px;top:46px;width:16px;height:16px;border-radius:50%;
+  background:#fff;border:3px dashed var(--ink);
+  box-shadow:-14px 12px 0 -4px #fff, -14px 12px 0 -1px var(--ink);
+}
+.bubble b{font-family:var(--display);font-weight:400;color:var(--stamp)}
+.narr{font-size:18px;max-width:62ch}
+.big{font-family:var(--display);color:var(--stamp);font-variant-numeric:tabular-nums}
+
+/* ---------- question form ---------- */
+.ask{
+  border-top:3px dashed var(--line);padding-top:16px;display:grid;gap:10px;
+}
+.ask label{font-weight:700;font-size:19px}
+.hint{font-size:15px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.row input{
+  font-family:var(--display);font-size:26px;width:200px;max-width:100%;
+  padding:8px 12px;border:3px solid var(--ink);border-radius:6px;background:#fff;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.row .unit{align-self:center;font-weight:700}
+button{
+  font-family:var(--display);font-size:17px;cursor:pointer;
+  background:var(--stamp);color:#fff;border:3px solid var(--ink);border-radius:6px;
+  padding:10px 18px;box-shadow:4px 4px 0 var(--ink);transition:transform .1s, box-shadow .1s;
+}
+button:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+button.ghost{background:var(--paper);color:var(--ink)}
+button.calm{background:var(--calm)}
+:focus-visible{outline:4px solid var(--calm);outline-offset:3px}
+.err{color:var(--stamp);font-weight:700;font-size:16px;min-height:1.3em}
+
+/* answered */
+.answer{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;border-top:3px dashed var(--line);padding-top:14px}
+.answer .big{font-size:30px}
+.pile{display:flex;flex-wrap:wrap;gap:3px;max-width:100%}
+.pile svg{width:22px;height:22px}
+.pile .more{font-family:var(--display);font-size:14px;align-self:center;margin-left:4px}
+.legend{font-size:13px;color:var(--muted);width:100%}
+
+/* ---------- truck animation ---------- */
+.road{height:44px;position:relative;overflow:hidden;border-bottom:3px dashed var(--ink);margin:-6px 0 0}
+.road svg{position:absolute;bottom:2px;left:-90px;width:84px;height:40px;animation:drive 1.6s ease-in-out forwards}
+@keyframes drive{to{left:calc(100% + 10px)}}
+
+/* ---------- results ---------- */
+.twist{background:var(--ink);color:var(--paper)}
+.twist::before{background:rgba(210,58,34,.9)}
+.twist .bubble{color:var(--ink)}
+.twist .tag .step{background:var(--tape);color:var(--ink)}
+.twist .tag .ar{color:var(--tape)}
+.twist .art svg{background:var(--paper);border-radius:50%;padding:8px}
+.stamp{
+  display:inline-block;font-family:var(--display);color:var(--stamp);border:4px solid var(--stamp);
+  padding:4px 12px;border-radius:6px;transform:rotate(-4deg);font-size:22px;background:rgba(255,255,255,.04)
+}
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.res{border:3px solid var(--ink);border-radius:6px;padding:12px;background:#fff;display:grid;gap:6px;align-content:start}
+.res.over{border-color:var(--stamp);box-shadow:inset 0 6px 0 var(--stamp)}
+.res.short{border-color:var(--calm);box-shadow:inset 0 6px 0 var(--calm)}
+.res.ok{box-shadow:inset 0 6px 0 var(--ink)}
+.res h3{font-size:15px}
+.res .n{font-family:var(--display);font-size:28px;font-variant-numeric:tabular-nums;line-height:1.1}
+.res.over .n{color:var(--stamp)}
+.res.short .n{color:var(--calm)}
+.res p{font-size:15px}
+.total{font-size:19px}
+
+/* ---------- whip ---------- */
+.figure{background:#fff;border:3px solid var(--ink);border-radius:6px;padding:12px;overflow-x:auto}
+.figure svg{display:block;width:100%;min-width:520px;height:auto}
+.def{display:grid;gap:6px;border-left:8px solid var(--tape);padding-left:14px}
+.def h3{font-size:24px}
+.def .ar{font-size:22px;font-weight:700;color:var(--muted)}
+.cap{font-size:15px;color:var(--muted)}
+.toggle{display:flex;flex-wrap:wrap;gap:10px}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.compare{font-size:18px}
+
+/* quiz */
+.quiz{display:grid;gap:8px}
+.quiz button{background:#fff;color:var(--ink);text-align:left;font-family:var(--body);font-weight:500;font-size:17px;box-shadow:3px 3px 0 var(--ink)}
+.quiz button.right{background:var(--calm);color:#fff}
+.quiz button.wrong{background:#f6d4cc}
+.fb{font-weight:700;min-height:1.4em}
+
+footer{margin-top:40px;font-size:13px;color:var(--muted);text-align:center}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .scene-body{grid-template-columns:1fr}
+  .art svg{width:110px;height:110px;margin:0 auto}
+  .bubble::before,.bubble.think::after{display:none}
+  .bubble{font-size:18px}
+  .chain .nm{font-size:10px}
+  .dot{width:30px;height:30px}
+  .dot svg{width:20px;height:20px}
+  .chain li:not(:last-child)::after{top:14px;left:calc(50% + 18px);right:calc(-50% + 18px)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .road{display:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="box" viewBox="0 0 24 24">
+      <path d="M3 7l9-4 9 4v10l-9 4-9-4z" fill="#c9965a" stroke="#2b1f17" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M3 7l9 4 9-4M12 11v10" fill="none" stroke="#2b1f17" stroke-width="1.6"/>
+      <ellipse cx="7.6" cy="13.6" rx="1.8" ry="2.6" fill="#2b1f17" transform="rotate(-20 7.6 13.6)"/>
+    </symbol>
+    <!-- small icons for chain bar -->
+    <symbol id="i-customer" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4" fill="currentColor"/><path d="M4 21c0-5 3.6-8 8-8s8 3 8 8z" fill="currentColor"/></symbol>
+    <symbol id="i-store" viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5z" fill="currentColor"/><rect x="4" y="10" width="16" height="11" fill="none" stroke="currentColor" stroke-width="2"/><rect x="10" y="14" width="4" height="7" fill="currentColor"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="10" fill="currentColor"/><path d="M14 9h4l4 4v3h-8z" fill="currentColor"/><circle cx="6" cy="18" r="2.4" fill="currentColor"/><circle cx="18" cy="18" r="2.4" fill="currentColor"/></symbol>
+    <symbol id="i-factory" viewBox="0 0 24 24"><path d="M2 21V10l6 4v-4l6 4V6h3v-3h3v18z" fill="currentColor"/></symbol>
+    <symbol id="i-plant" viewBox="0 0 24 24"><path d="M12 22V9" stroke="currentColor" stroke-width="2.4"/><path d="M12 13c-5 0-7-3-7-7 4 0 7 2 7 7zM12 11c0-5 3-7 7-7 0 4-2 7-7 7z" fill="currentColor"/><circle cx="8" cy="17" r="2" fill="currentColor"/><circle cx="16" cy="16" r="2" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<nav class="chain" aria-label="Supply chain progress">
+  <ol id="chain"></ol>
+</nav>
+
+<main class="wrap">
+  <header class="hero">
+    <p class="eyebrow">INS260 · Chapter 9 · Supply chains</p>
+    <h1>The Great <span>Coffee</span> Panic</h1>
+    <p class="lede">One customer buys a mountain of instant coffee. Everyone in the supply chain reacts. You decide how much each company orders, then see what your choices do to the whole chain.</p>
+  </header>
+
+  <div class="story" id="story" aria-live="polite"></div>
+
+  <footer>A made-up classroom scenario. LuLu appears only as a familiar example of a retailer; the numbers and events are invented.</footer>
+</main>
+
+<script>
+(function(){
+const STAGES = [
+  {id:"customer", name:"Customer", ar:"العميل", icon:"i-customer"},
+  {id:"lulu", name:"LuLu", role:"Retailer", ar:"بائع التجزئة", icon:"i-store"},
+  {id:"dist", name:"Distributor", ar:"الموزّع", icon:"i-truck"},
+  {id:"manu", name:"Manufacturer", ar:"المصنّع", icon:"i-factory"},
+  {id:"supp", name:"Supplier", ar:"المورّد", icon:"i-plant"}
+];
+const SPIKE = 1000, NORMAL = 200;
+const fmt = n => Number(n).toLocaleString("en-US");
+
+/* ---------- big illustrations ---------- */
+const ART = {
+customer:`<svg viewBox="0 0 150 150" role="img" aria-label="A customer pushing a cart full of coffee boxes">
+  <circle cx="44" cy="34" r="15" fill="#f0c9a0" stroke="#2b1f17" stroke-width="3"/>
+  <path d="M30 31c2-12 26-14 29 1-8-4-20-5-29-1z" fill="#2b1f17"/>
+  <path d="M26 98V62c0-9 8-14 18-14s18 5 18 14v36z" fill="#167566" stroke="#2b1f17" stroke-width="3"/>
+  <path d="M60 64l20 10" stroke="#2b1f17" stroke-width="6" stroke-linecap="round"/>
+  <path d="M32 98v30M54 98v30" stroke="#2b1f17" stroke-width="7" stroke-linecap="round"/>
+  <path d="M76 70h8l8 46h44l6-34H90" fill="none" stroke="#2b1f17" stroke-width="4" stroke-linejoin="round"/>
+  <g><use href="#box" x="92" y="58" width="24" height="24"/><use href="#box" x="114" y="58" width="24" height="24"/><use href="#box" x="103" y="38" width="24" height="24"/><use href="#box" x="92" y="80" width="24" height="24"/><use href="#box" x="114" y="80" width="24" height="24"/><use href="#box" x="110" y="18" width="24" height="24"/></g>
+  <circle cx="98" cy="128" r="7" fill="#2b1f17"/><circle cx="130" cy="128" r="7" fill="#2b1f17"/>
+</svg>`,
+lulu:`<svg viewBox="0 0 150 150" role="img" aria-label="A supermarket building with a sign that says LuLu">
+  <rect x="14" y="56" width="122" height="78" fill="#f8efdc" stroke="#2b1f17" stroke-width="3"/>
+  <rect x="22" y="22" width="106" height="28" rx="4" fill="#167566" stroke="#2b1f17" stroke-width="3"/>
+  <text x="75" y="43" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="19" fill="#f8efdc">LuLu</text>
+  <path d="M10 56h130l-6 16H16z" fill="#d23a22" stroke="#2b1f17" stroke-width="3"/>
+  <path d="M36 56l-3 16M62 56l-2 16M88 56l2 16M114 56l3 16" stroke="#f8efdc" stroke-width="7"/>
+  <rect x="60" y="92" width="30" height="42" fill="#2b1f17"/>
+  <rect x="24" y="86" width="28" height="24" fill="#bfe1dc" stroke="#2b1f17" stroke-width="3"/>
+  <rect x="98" y="86" width="28" height="24" fill="#bfe1dc" stroke="#2b1f17" stroke-width="3"/>
+  <use href="#box" x="100" y="112" width="20" height="20"/><use href="#box" x="26" y="112" width="20" height="20"/>
+</svg>`,
+dist:`<svg viewBox="0 0 150 150" role="img" aria-label="A delivery truck loaded with coffee">
+  <rect x="8" y="48" width="88" height="62" fill="#f8efdc" stroke="#2b1f17" stroke-width="3"/>
+  <text x="52" y="76" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="12" fill="#2b1f17">COFFEE</text>
+  <text x="52" y="94" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="12" fill="#d23a22">RUSH!</text>
+  <path d="M96 66h28l18 22v22H96z" fill="#f2c12e" stroke="#2b1f17" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M104 72h18l10 14h-28z" fill="#bfe1dc" stroke="#2b1f17" stroke-width="3"/>
+  <circle cx="32" cy="114" r="12" fill="#2b1f17"/><circle cx="32" cy="114" r="4" fill="#f8efdc"/>
+  <circle cx="118" cy="114" r="12" fill="#2b1f17"/><circle cx="118" cy="114" r="4" fill="#f8efdc"/>
+  <path d="M0 132h150" stroke="#2b1f17" stroke-width="3" stroke-dasharray="10 8"/>
+  <use href="#box" x="14" y="24" width="26" height="26"/><use href="#box" x="38" y="24" width="26" height="26"/><use href="#box" x="62" y="24" width="26" height="26"/>
+</svg>`,
+manu:`<svg viewBox="0 0 150 150" role="img" aria-label="A coffee factory with smoking chimneys">
+  <path d="M10 134V74l30 18V74l30 18V74l30 18V44h14V28h14v106z" fill="#f8efdc" stroke="#2b1f17" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M121 22c-6-8 4-12 0-20M131 20c-5-6 4-10 1-16" fill="none" stroke="#6b5643" stroke-width="3" stroke-linecap="round"/>
+  <rect x="22" y="104" width="16" height="16" fill="#bfe1dc" stroke="#2b1f17" stroke-width="3"/>
+  <rect x="52" y="104" width="16" height="16" fill="#bfe1dc" stroke="#2b1f17" stroke-width="3"/>
+  <rect x="82" y="104" width="16" height="16" fill="#bfe1dc" stroke="#2b1f17" stroke-width="3"/>
+  <path d="M104 96h22v38h-22z" fill="#d23a22" stroke="#2b1f17" stroke-width="3"/>
+  <rect x="106" y="88" width="18" height="10" rx="2" fill="#2b1f17"/>
+  <ellipse cx="115" cy="115" rx="5" ry="7" fill="#f8efdc"/>
+</svg>`,
+supp:`<svg viewBox="0 0 150 150" role="img" aria-label="Coffee plants and a sack of coffee beans">
+  <path d="M0 134h150" stroke="#2b1f17" stroke-width="3"/>
+  <g stroke="#2b1f17" stroke-width="3">
+    <path d="M40 134V40" fill="none"/>
+    <path d="M40 60c-20 0-28-12-28-26 16 0 28 8 28 26zM40 82c0-18 12-28 28-28 0 16-10 28-28 28zM40 104c-18 0-26-10-26-24 15 0 26 8 26 24z" fill="#167566"/>
+  </g>
+  <g fill="#d23a22" stroke="#2b1f17" stroke-width="2"><circle cx="48" cy="96" r="5"/><circle cx="32" cy="72" r="5"/><circle cx="52" cy="48" r="5"/><circle cx="46" cy="116" r="5"/></g>
+  <path d="M86 134c-6-28 0-50 10-62h36c10 12 16 34 10 62z" fill="#c9965a" stroke="#2b1f17" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M94 72c8 6 34 6 40 0" fill="none" stroke="#2b1f17" stroke-width="3"/>
+  <text x="114" y="108" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="13" fill="#2b1f17">BEANS</text>
+  <g fill="#2b1f17"><ellipse cx="100" cy="66" rx="4" ry="6" transform="rotate(-30 100 66)"/><ellipse cx="114" cy="62" rx="4" ry="6"/><ellipse cx="128" cy="66" rx="4" ry="6" transform="rotate(30 128 66)"/></g>
+</svg>`
+};
+const TRUCK = `<svg viewBox="0 0 84 40" aria-hidden="true"><rect x="2" y="6" width="50" height="24" fill="#f8efdc" stroke="#2b1f17" stroke-width="2.5"/><path d="M52 14h16l12 10v6H52z" fill="#f2c12e" stroke="#2b1f17" stroke-width="2.5"/><circle cx="16" cy="32" r="6" fill="#2b1f17"/><circle cx="66" cy="32" r="6" fill="#2b1f17"/><use href="#box" x="14" y="8" width="20" height="20"/></svg>`;
+
+/* ---------- questions per stage ---------- */
+const STEPS = [
+  { id:"lulu", from:"customer",
+    say: () => `Wow! A customer bought <b>1,000</b> boxes in one go! Coffee is so popular now. I need to order <b>sooo much</b> coffee!`,
+    base: () => SPIKE,
+    q: "How many boxes of coffee will LuLu order from the distributor?",
+    hint: "LuLu usually sells about 200 boxes a week." },
+  { id:"dist", from:"lulu",
+    say: s => `LuLu just ordered <b>${fmt(s.lulu)}</b> boxes! LuLu is in high demand. I need to order <b>sooo much</b> coffee now!`,
+    base: s => s.lulu,
+    q: "How many boxes will the distributor order from the coffee manufacturer?",
+    hint: "The distributor only sees LuLu's order. It does not know why LuLu ordered so much." },
+  { id:"manu", from:"dist",
+    say: s => `The distributor wants <b>${fmt(s.dist)}</b> boxes! Everyone wants coffee! I need <b>sooo many</b> coffee beans!`,
+    base: s => s.dist,
+    q: "The manufacturer needs coffee beans. For how many boxes will it order beans from the supplier?",
+    hint: "The manufacturer only sees the distributor's order." },
+  { id:"supp", from:"manu",
+    say: s => `The manufacturer wants beans for <b>${fmt(s.manu)}</b> boxes! I'd better prepare even more, just in case!`,
+    base: s => s.manu,
+    q: "For how many boxes will the supplier prepare coffee beans?",
+    hint: "The supplier is the furthest from the real customer. It knows the least." }
+];
+
+/* ---------- state ---------- */
+let state = {step:0, lulu:null, dist:null, manu:null, supp:null, view:"yours", quiz:null};
+window.claude?.hot?.snapshot?.(() => state);
+
+const $ = s => document.querySelector(s);
+const stageById = id => STAGES.find(x => x.id === id);
+const val = id => id === "customer" ? SPIKE : state[id];
+
+/* ---------- chain bar ---------- */
+function renderChain(){
+  const doneIdx = state.step >= 5 ? 4 : state.step; // index of last active stage
+  $("#chain").innerHTML = STAGES.map((st,i)=>{
+    const on = state.step === 0 ? i === 0 : i <= doneIdx;
+    const now = state.step > 0 && state.step < 5 && i === state.step;
+    const v = val(st.id);
+    return `<li class="${on?"on":""} ${now?"now":""}">
+      <span class="dot"><svg aria-hidden="true"><use href="#${st.icon}"/></svg></span>
+      <span class="nm">${st.name}</span>
+      <span class="qty">${v!=null && (i===0 || state[st.id]!=null) ? fmt(v) : ""}</span>
+    </li>`;
+  }).join("");
+}
+
+/* ---------- pieces ---------- */
+function pile(n){
+  const per = 100, max = 60;
+  const count = Math.ceil(n/per);
+  const shown = Math.min(count, max);
+  let s = "";
+  for(let i=0;i<shown;i++) s += `<svg aria-hidden="true"><use href="#box"/></svg>`;
+  if(count > max) s += `<span class="more">+${fmt(count-max)} more</span>`;
+  return `<div class="pile" role="img" aria-label="${fmt(n)} boxes">${s}</div><p class="legend">Each box picture = 100 boxes of coffee</p>`;
+}
+function tag(n, st, extra){
+  return `<div class="tag"><span class="step">${n}</span><span>${st.name}${st.role?` (${st.role})`:""}</span><span class="ar" lang="ar">${st.ar}</span>${extra||""}</div>`;
+}
+
+function introScene(){
+  const st = stageById("customer");
+  return `<section class="scene" aria-labelledby="h-intro">
+    ${tag("Start", st)}
+    <div class="scene-body">
+      <div class="art">${ART.customer}</div>
+      <div class="bubble"><span id="h-intro">I'd like <b>1,000</b> boxes of instant coffee, please. All of them. Today.</span></div>
+    </div>
+    <p class="narr">LuLu usually sells about <span class="big">200</span> boxes of instant coffee a week. Today, one customer buys <span class="big">1,000</span> boxes at once. Nobody in the supply chain knows why.</p>
+    ${pile(SPIKE)}
+    ${state.step === 0 ? `<div><button type="button" id="go">Follow the coffee →</button></div>` : ""}
+  </section>`;
+}
+
+function stepScene(i){
+  const def = STEPS[i];
+  const st = stageById(def.id);
+  const answered = state[def.id] != null;
+  const n = i + 1;
+  return `<section class="scene" id="scene-${def.id}" aria-labelledby="q-${def.id}">
+    ${!answered ? `<div class="road" aria-hidden="true">${TRUCK}</div>` : ""}
+    ${tag(`Stop ${n}`, st)}
+    <div class="scene-body">
+      <div class="art">${ART[def.id]}</div>
+      <div class="bubble think">${def.say(state)}</div>
+    </div>
+    ${answered ? `
+      <div class="answer">
+        <span>You decided:</span><span class="big">${fmt(state[def.id])}</span><span>boxes</span>
+        ${pile(state[def.id])}
+      </div>` : `
+      <div class="ask" data-id="${def.id}">
+        <label for="in-${def.id}" id="q-${def.id}">${def.q}</label>
+        <p class="hint">${def.hint}</p>
+        <div class="row">
+          <input id="in-${def.id}" name="n" type="number" inputmode="numeric" min="0" max="1000000" step="1" placeholder="e.g. ${Math.min(def.base(state) + 1000, 1000000)}" autocomplete="off">
+          <span class="unit">boxes</span>
+          <button type="button" class="place">Place order</button>
+        </div>
+        <p class="err" id="err-${def.id}" role="alert"></p>
+      </div>`}
+  </section>`;
+}
+
+/* ---------- results ---------- */
+function compute(o){
+  // o: {lulu,dist,manu,supp}; each stage only needed to replace what it shipped downstream
+  const need = {lulu:SPIKE, dist:o.lulu, manu:o.dist, supp:o.manu};
+  return ["lulu","dist","manu","supp"].map(id => ({id, ordered:o[id], needed:need[id], diff:o[id]-need[id]}));
+}
+
+function resultCards(rows){
+  return rows.map(r=>{
+    const st = stageById(r.id);
+    let cls, n, txt;
+    if(r.diff > 0){
+      const w = Math.ceil(r.diff / NORMAL);
+      cls="over"; n=`+${fmt(r.diff)}`;
+      txt=`extra boxes stuck in storage. At 200 a week, that's about <b>${fmt(w)} week${w===1?"":"s"}</b> of coffee nobody asked for.`;
+    } else if(r.diff === 0){
+      cls="ok"; n="0"; txt="extra boxes. This order was exactly right.";
+    } else {
+      cls="short"; n=`−${fmt(-r.diff)}`;
+      txt="boxes short. Some orders could not be filled, so customers had to wait.";
+    }
+    return `<div class="res ${cls}"><h3>${st.name}</h3><div class="n">${n}</div><p>${txt}</p></div>`;
+  }).join("");
+}
+
+function whipSVG(values, color){
+  // values: [customer, lulu, dist, manu, supp]. Every company is a peak; the dips between them deepen too,
+  // so the whole wave grows from the customer (handle) to the supplier (tip).
+  const W=700,H=330,mid=178,left=80,right=640;
+  const max = Math.max(...values, 1);
+  const xs = values.map((_,i)=> left + i*(right-left)/(values.length-1));
+  const amp = v => 14 + (v/max)*116;
+  const peaks = values.map((v,i)=>[xs[i], mid - amp(v)]);
+  const seq = [[22, mid]];
+  peaks.forEach((pk,i)=>{
+    seq.push(pk);
+    if(i < peaks.length-1){
+      const depth = 0.75 * (amp(values[i]) + amp(values[i+1])) / 2;
+      seq.push([(xs[i]+xs[i+1])/2, mid + depth]);
+    }
+  });
+  let d = `M${seq[0][0]},${seq[0][1]}`;
+  for(let i=1;i<seq.length;i++){
+    const [x0,y0]=seq[i-1],[x1,y1]=seq[i], cx=(x1-x0)/2;
+    d += ` C${x0+cx},${y0} ${x1-cx},${y1} ${x1},${y1}`;
+  }
+  const last = peaks[peaks.length-1];
+  const labels = STAGES.map((st,i)=>{
+    const [x,y]=peaks[i];
+    return `<circle cx="${x}" cy="${y}" r="7" fill="${color}" stroke="#2b1f17" stroke-width="2.5"/>
+      <text x="${x}" y="${y-16}" text-anchor="middle" font-family="Bungee, Arial Black, sans-serif" font-size="17" fill="#2b1f17">${fmt(values[i])}</text>
+      <text x="${x}" y="${H-6}" text-anchor="middle" font-family="Lexend, sans-serif" font-weight="700" font-size="14" fill="#2b1f17">${st.name}</text>`;
+  }).join("");
+  const crack = `<path d="M${last[0]+12},${last[1]-8} l14,-10 M${last[0]+14},${last[1]} l18,0 M${last[0]+12},${last[1]+8} l14,10" stroke="#d23a22" stroke-width="3" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A whip shape that grows from the customer to the supplier. Orders: ${values.map((v,i)=>STAGES[i].name+" "+fmt(v)).join(", ")}">
+    <line x1="10" y1="${mid}" x2="${W-10}" y2="${mid}" stroke="#2b1f17" stroke-opacity=".15" stroke-width="2" stroke-dasharray="6 6"/>
+    <rect x="2" y="${mid-9}" width="22" height="18" rx="5" fill="#2b1f17"/>
+    <text x="2" y="${mid-16}" font-family="Lexend, sans-serif" font-size="11" fill="#6b5643">handle</text>
+    <path d="${d}" fill="none" stroke="#2b1f17" stroke-width="9" stroke-linecap="round"/>
+    <path d="${d}" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round"/>
+    ${crack}${labels}
+  </svg>`;
+}
+
+function weeklySeries(values){
+  // 12 weeks. Normal 200. Customer spikes in week 3; each stage reacts one week later.
+  // After over-ordering, a stage orders nothing until its extra stock is used up.
+  const weeks = 12;
+  const rows = compute({lulu:values[1],dist:values[2],manu:values[3],supp:values[4]});
+  return STAGES.map((st,i)=>{
+    const spikeWeek = 2 + i; // 0-based
+    const arr = Array(weeks).fill(NORMAL);
+    if(spikeWeek < weeks) arr[spikeWeek] = values[i];
+    if(i>0){
+      const extra = Math.max(0, rows[i-1].diff);
+      const idle = Math.ceil(extra / NORMAL);
+      for(let k=1;k<=idle && spikeWeek+k<weeks;k++) arr[spikeWeek+k] = 0;
+    }
+    return arr;
+  });
+}
+
+function weeklySVG(values, color){
+  const series = weeklySeries(values);
+  const W=700, rowH=64, top=10, labelW=130, H=top+rowH*series.length+26;
+  const max = Math.max(...series.flat(), 1);
+  const n = series[0].length, plotW = W-labelW-14;
+  const x = j => labelW + j*plotW/(n-1);
+  let out = "";
+  series.forEach((arr,i)=>{
+    const y0 = top + rowH*(i+1) - 10, h = rowH-18;
+    const y = v => y0 - (v/max)*h;
+    let line = arr.map((v,j)=>`${j?"L":"M"}${x(j).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+    const area = `${line} L${x(n-1)},${y0} L${x(0)},${y0} Z`;
+    const peak = Math.max(...arr), pj = arr.indexOf(peak);
+    out += `<line x1="${labelW}" y1="${y0}" x2="${W-14}" y2="${y0}" stroke="#2b1f17" stroke-opacity=".25"/>
+      <path d="${area}" fill="${color}" fill-opacity=".18"/>
+      <path d="${line}" fill="none" stroke="${color}" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="${x(pj)}" cy="${y(peak)}" r="4.5" fill="${color}" stroke="#2b1f17" stroke-width="1.5"/>
+      <text x="${Math.min(x(pj)+8, W-60)}" y="${y(peak)-6}" font-family="Bungee, Arial Black, sans-serif" font-size="13" fill="#2b1f17">${fmt(peak)}</text>
+      <text x="0" y="${y0-14}" font-family="Lexend, sans-serif" font-weight="700" font-size="14" fill="#2b1f17">${STAGES[i].name}</text>`;
+  });
+  for(let j=0;j<n;j+=1){
+    out += `<text x="${x(j)}" y="${H-6}" text-anchor="middle" font-family="Lexend, sans-serif" font-size="11" fill="#6b5643">W${j+1}</text>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Weekly orders for each company over 12 weeks, all drawn to the same scale.">${out}</svg>`;
+}
+
+function finalScenes(){
+  const yours = [SPIKE, state.lulu, state.dist, state.manu, state.supp];
+  const calm = [SPIKE, SPIKE, SPIKE, SPIKE, SPIKE];
+  const shared = state.view === "shared";
+  const values = shared ? calm : yours;
+  const color = shared ? "#167566" : "#d23a22";
+  const rows = compute({lulu:state.lulu,dist:state.dist,manu:state.manu,supp:state.supp});
+  const totalExtra = rows.reduce((a,r)=>a+Math.max(0,r.diff),0);
+  const st = stageById("customer");
+
+  return `
+  <section class="scene twist" id="scene-twist" aria-labelledby="h-twist">
+    ${tag("One week later", st)}
+    <div class="scene-body">
+      <div class="art">${ART.customer}</div>
+      <div class="bubble"><span id="h-twist">Thank you! That coffee was for <b>one big wedding</b>. I won't need that much again.</span></div>
+    </div>
+    <p class="narr">The 1,000 boxes were a <b>one-time order</b>. Customers go back to buying <span class="big" style="color:var(--tape)">200</span> boxes a week. But every company already placed its big order…</p>
+    <div><span class="stamp">Too much coffee!</span></div>
+  </section>
+
+  <section class="scene" aria-labelledby="h-res">
+    <h2 id="h-res" style="font-size:28px">What happened to each company</h2>
+    <p class="narr">Each company only needed to replace what it sold to the next company. Here is what is left over:</p>
+    <div class="results">${resultCards(rows)}</div>
+    <p class="total">Together, the chain is stuck with <span class="big">${fmt(totalExtra)}</span> extra boxes of coffee, all because of <b>one</b> customer order. Now these companies have trouble selling the extra stock, and their money is tied up in coffee sitting in warehouses.</p>
+  </section>
+
+  <section class="scene" aria-labelledby="h-whip">
+    <div class="def">
+      <h3 id="h-whip">This is the bullwhip effect</h3>
+      <p class="ar" lang="ar">تأثير السوط</p>
+      <p>A <b>small change</b> in what customers buy becomes a <b>bigger and bigger</b> change in orders as you move up the supply chain: from the retailer, to the distributor, to the manufacturer, to the supplier.</p>
+    </div>
+    <p class="cap">Think of a whip: a small flick of the hand at the handle makes a huge swing at the tip. The customer is the handle. The supplier is the tip.</p>
+    <div class="toggle" role="group" aria-label="Choose which numbers to show">
+      <button type="button" class="ghost" data-view="yours" aria-pressed="${!shared}">Your numbers</button>
+      <button type="button" class="ghost" data-view="shared" aria-pressed="${shared}">With shared information</button>
+    </div>
+    <div class="figure">${whipSVG(values, color)}</div>
+    <p class="cap">${shared
+      ? "If every company could see the real customer demand, each would order 1,000 boxes once. No panic, no extra coffee."
+      : "Your orders, from the customer (left) to the supplier (right)."}</p>
+    <h3 style="font-size:20px">Orders week by week</h3>
+    <div class="figure">${weeklySVG(values, color)}</div>
+    <p class="cap">All rows use the same scale. Each company places its big order a week after the company before it, and every order is bigger than the last. After that, companies with extra stock stop ordering until it is sold.</p>
+  </section>
+
+  <section class="scene" aria-labelledby="h-fix">
+    <h2 id="h-fix" style="font-size:28px">How can companies stop it?</h2>
+    <p class="narr">Nobody in this story was careless. Each company guessed, because it could only see the order from the company next to it. The fix is <b>sharing information</b>:</p>
+    <ul class="narr" style="margin:0;padding-left:1.2em;display:grid;gap:6px">
+      <li><b>Share real sales data.</b> If the supplier could see LuLu's actual sales, it would know the 1,000 boxes were a one-off.</li>
+      <li><b>Use supply chain management systems.</b> These systems connect the companies in a chain so everyone plans from the same, real demand.</li>
+      <li><b>Order based on real demand, not panic.</b> Ordering only what customers actually buy is the idea behind a <b>pull-based</b> supply chain.</li>
+    </ul>
+    <div class="compare">Press <b>With shared information</b> above to see the calm version of the chain.</div>
+  </section>
+
+  <section class="scene" aria-labelledby="h-quiz">
+    <h2 id="h-quiz" style="font-size:24px">Quick check</h2>
+    <p class="narr">Why did every company end up with too much coffee?</p>
+    <div class="quiz" id="quiz">
+      ${[
+        ["a","The customer kept buying 1,000 boxes every week."],
+        ["b","Each company only saw the order from the next company, not the real customer demand."],
+        ["c","Coffee became more expensive."],
+        ["d","The delivery trucks were too slow."]
+      ].map(([k,t])=>{
+        let cls="";
+        if(state.quiz){ if(k==="b") cls="right"; else if(k===state.quiz) cls="wrong"; }
+        return `<button type="button" data-q="${k}" class="${cls}">${t}</button>`;
+      }).join("")}
+    </div>
+    <p class="fb" role="status">${state.quiz ? (state.quiz==="b"
+      ? "Correct! Without real demand information, each company guessed, and the guesses grew bigger up the chain."
+      : "Not quite. The customer only bought 1,000 boxes once. The problem was that each company could only see the order next to it.") : ""}</p>
+    <div><button type="button" class="calm" id="again">Play again</button></div>
+  </section>`;
+}
+
+/* ---------- render ---------- */
+function render(focusId){
+  renderChain();
+  let html = introScene();
+  for(let i=0;i<STEPS.length;i++){
+    if(state.step >= i+1) html += stepScene(i);
+  }
+  if(state.step >= 5) html += finalScenes();
+  $("#story").innerHTML = html;
+  bind();
+  if(focusId){
+    const el = document.getElementById(focusId);
+    if(el){
+      const sc = el.closest("section");
+      sc && sc.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto":"smooth", block:"start"});
+      if(el.tagName === "INPUT") setTimeout(()=>el.focus({preventScroll:true}), 400);
+    }
+  }
+}
+
+function bind(){
+  const go = $("#go");
+  if(go) go.onclick = () => { state.step = 1; render("in-lulu"); };
+  document.querySelectorAll("div.ask").forEach(f=>{
+    const submit = () => {
+      const id = f.dataset.id;
+      const input = f.querySelector("input");
+      const raw = input.value.trim();
+      const n = Number(raw);
+      const err = document.getElementById("err-"+id);
+      if(raw === "" || !Number.isFinite(n)){ err.textContent = "Type a number of boxes, for example 1500."; input.focus(); return; }
+      if(n < 0 || !Number.isInteger(n)){ err.textContent = "Use a whole number of boxes, 0 or more."; input.focus(); return; }
+      if(n > 1000000){ err.textContent = "That's more than a million boxes! Try a number up to 1,000,000."; input.focus(); return; }
+      state[id] = n;
+      state.step += 1;
+      const next = STEPS[state.step-1];
+      render(next ? "in-"+next.id : "scene-twist");
+    };
+    f.querySelector("button.place").onclick = submit;
+    f.querySelector("input").onkeydown = e => { if(e.key === "Enter"){ e.preventDefault(); submit(); } };
+  });
+  document.querySelectorAll("[data-view]").forEach(b=>{
+    b.onclick = () => { state.view = b.dataset.view; const y = window.scrollY; render(); window.scrollTo(0,y); };
+  });
+  document.querySelectorAll("[data-q]").forEach(b=>{
+    b.onclick = () => { state.quiz = b.dataset.q; const y = window.scrollY; render(); window.scrollTo(0,y); };
+  });
+  const again = $("#again");
+  if(again) again.onclick = () => {
+    state = {step:0, lulu:null, dist:null, manu:null, supp:null, view:"yours", quiz:null};
+    render(); window.scrollTo({top:0, behavior:"smooth"});
+  };
+}
+
+function start(saved){
+  if(saved && typeof saved.step === "number") state = Object.assign(state, saved);
+  render();
+}
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+})();
+</script>
+</body>
+</html>
